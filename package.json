@@ -1,7 +1,7 @@
 {
   "name": "initial",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "license": "MIT",
   "scripts": {
     "start": "electron main.js"
