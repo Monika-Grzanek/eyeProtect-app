@@ -18,33 +18,32 @@ const App = () => {
     const [timer, setTimer] = useState(null);
     
     const formatTime = (time) => {
-        const minutes = Math.floor((time % 3600) / 60);
-        const seconds = Math.round(time % 60);
-        return [
-          minutes > 9 ? minutes : '0' + minutes,
-          seconds > 9 ? seconds : '0' + seconds
-        ].filter(Boolean).join(':');
+      let minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+      if (seconds < 10) seconds = '0' + seconds;
+      if (minutes < 10) minutes = '0' + minutes;
+      return minutes + ':' + seconds;
     }
 
     const step = () => {
-        setTime((prevTime) => prevTime-1);
-        if(setTime === 0) {
-            if(setStatus === 'work') {
+      setTime((time) => time -1);
+        if(time === 0) {
+            if(status === 'work') {
                 setStatus('rest'),
                 setTime(20),
                 playBell();
-            } else if (setStatus === 'rest') {
+            } else if (status === 'rest') {
                 setStatus('work'),
                 setTime(1200),
                 playBell();
-            }
+            } 
         }
     }
 
     const startTimer = () => {
         setStatus('work'),
         setTime(1200),
-        setTimer(setInterval(step, 1000));
+        setTimer(setInterval(step, 10));
     }
 
     const stopTimer = () => {
