@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const AppDescription = () => {
     return (
@@ -16,7 +16,7 @@ const App = () => {
     const [status, setStatus] = useState('off');
     const [time, setTime] = useState(0);
     const [timer, setTimer] = useState(null);
-    
+
     const formatTime = (time) => {
       let minutes = Math.floor(time / 60);
       let seconds = time % 60;
@@ -25,25 +25,29 @@ const App = () => {
       return minutes + ':' + seconds;
     }
 
-    const step = () => {
-      setTime((time) => time -1);
-        if(time === 0) {
-            if(status === 'work') {
-                setStatus('rest'),
-                setTime(20),
-                playBell();
-            } else if (status === 'rest') {
-                setStatus('work'),
-                setTime(1200),
-                playBell();
-            } 
+    useEffect(() => {
+      if(time === 0) {
+        if(status === 'work') {
+          setStatus('rest'),
+          setTime(20),
+          playBell();
+        } else if (status === 'rest') {
+          setStatus('work'),
+          setTime(1200),
+          playBell();
         }
+      }
+    }, [time])
+    
+
+    const step = () => {
+      setTime((time) => time - 1);
     }
 
     const startTimer = () => {
         setStatus('work'),
         setTime(1200),
-        setTimer(setInterval(step, 10));
+        setTimer(setInterval(step, 1000));
     }
 
     const stopTimer = () => {
